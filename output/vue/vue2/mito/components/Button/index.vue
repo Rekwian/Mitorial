@@ -1,88 +1,48 @@
 <template>
-  <button
-    ref="MitoButtonRef"
-    :class="_classStringToObject(btnClasses)"
-    @click="handleClick"
-    :disabled="disabled"
-    :aria-label="ariaLabel"
-  >
+  <button :class="_classStringToObject(btnClasses)" @click="ripple($event)">
     <template v-if="loading">
       <mito-circular-progress :color="spinnerColor"></mito-circular-progress>
     </template>
 
     <template v-if="!loading">
-      <span class="mdc-button__ripple"></span>
-
-      <span class="mdc-button__touch"></span>
-
-      <template v-if="iconPosition === 'left'">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">{{
-          icon
-        }}</i>
-      </template>
-
-      <span class="mdc-button__label"><slot /></span>
-
-      <template v-if="iconPosition === 'right'">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">{{
-          icon
-        }}</i>
-      </template>
+      <slot />
     </template>
   </button>
 </template>
 
 <script lang="ts">
 interface Props {
-  outlined?: boolean;
-  text?: boolean;
-  color?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  ariaLabel?: string;
+  color: string;
+  outlined: boolean;
   loading?: boolean;
-  icon?: string;
-  iconPosition?: "left" | "right";
   spinnerColor: "string";
+  text: boolean;
 }
 
-import { MDCRipple } from "@material/ripple";
+import ripple from "../../plugins/ripple";
 import MitoCircularProgress from "../CircularProgress/index.vue";
 
 export default {
   name: "mito-button",
   components: { MitoCircularProgress: MitoCircularProgress },
-  props: {
-    outlined: { default: undefined },
-    text: { default: undefined },
-    color: { default: undefined },
-    loading: { default: undefined },
-    disabled: { default: undefined },
-    ariaLabel: { default: undefined },
-    spinnerColor: { default: "white" },
-    iconPosition: { default: undefined },
-    icon: { default: undefined },
-  },
+  props: ["color", "outlined", "text", "loading"],
 
-  mounted() {
-    const ripple = new MDCRipple(this.$refs.MitoButtonRef);
+  data() {
+    return { spinnerColor: "primary", ripple };
   },
 
   computed: {
     btnClasses() {
-      const classes = ["mito-btn", "mdc-button"];
+      const classes = ["mito-button"];
+      const color = this.color || "primary";
       if (this.outlined) {
-        classes.push("mdc-button--outlined");
+        classes.push(`mito-button-outlined-${color}`);
       } else if (this.text) {
-        classes.push("mdc-button--text");
+        classes.push(`mito-button-text-${color}`);
+        this.spinnerColor = "surface";
       } else {
-        classes.push("mdc-button--raised");
-      }
-      if (this.color) {
-        classes.push(`mdc-button--${this.color}`);
-      }
-      if (this.loading) {
-        classes.push("mdc-button--loading");
+        classes.push(`mito-button-raised-${color}`);
+        this.spinnerColor = "surface";
       }
       return classes.join(" ");
     },

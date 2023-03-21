@@ -1,87 +1,42 @@
 <template>
-  <button
-    ref="MitoButtonRef"
-    :class="_classStringToObject(btnClasses)"
-    @click="handleClick"
-    :disabled="disabled"
-    :aria-label="ariaLabel"
-  >
+  <button :class="_classStringToObject(btnClasses)" @click="ripple($event)">
     <template v-if="loading">
       <mito-circular-progress :color="spinnerColor"></mito-circular-progress>
     </template>
 
     <template v-if="!loading">
-      <span class="mdc-button__ripple"></span>
-
-      <span class="mdc-button__touch"></span>
-
-      <template v-if="iconPosition === 'left'">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">{{
-          icon
-        }}</i>
-      </template>
-
-      <span class="mdc-button__label"><slot /></span>
-
-      <template v-if="iconPosition === 'right'">
-        <i class="material-icons mdc-button__icon" aria-hidden="true">{{
-          icon
-        }}</i>
-      </template>
+      <slot />
     </template>
   </button>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, ref } from "vue";
 interface Props {
-  outlined?: boolean;
-  text?: boolean;
-  color?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  ariaLabel?: string;
+  color: string;
+  outlined: boolean;
   loading?: boolean;
-  icon?: string;
-  iconPosition?: "left" | "right";
   spinnerColor: "string";
+  text: boolean;
 }
 
-import { MDCRipple } from "@material/ripple";
+import ripple from "../../plugins/ripple";
 import MitoCircularProgress from "../CircularProgress/index.vue";
 
-const props = withDefaults(defineProps<Props>(), {
-  outlined: undefined,
-  text: undefined,
-  color: undefined,
-  loading: undefined,
-  disabled: undefined,
-  ariaLabel: undefined,
-  spinnerColor: "white",
-  iconPosition: undefined,
-  icon: undefined,
-});
-
-const MitoButtonRef = ref<HTMLButtonElement>();
-
-onMounted(() => {
-  const ripple = new MDCRipple(MitoButtonRef.value);
-});
+const props = defineProps<Props>();
+const spinnerColor = ref("primary");
 
 const btnClasses = computed(() => {
-  const classes = ["mito-btn", "mdc-button"];
+  const classes = ["mito-button"];
+  const color = props.color || "primary";
   if (props.outlined) {
-    classes.push("mdc-button--outlined");
+    classes.push(`mito-button-outlined-${color}`);
   } else if (props.text) {
-    classes.push("mdc-button--text");
+    classes.push(`mito-button-text-${color}`);
+    spinnerColor.value = "surface";
   } else {
-    classes.push("mdc-button--raised");
-  }
-  if (props.color) {
-    classes.push(`mdc-button--${props.color}`);
-  }
-  if (props.loading) {
-    classes.push("mdc-button--loading");
+    classes.push(`mito-button-raised-${color}`);
+    spinnerColor.value = "surface";
   }
   return classes.join(" ");
 });

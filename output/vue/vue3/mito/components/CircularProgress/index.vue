@@ -1,17 +1,31 @@
 <template>
-  <div :class="_classStringToObject(loadClasses)"></div>
+  <svg
+    width="19"
+    height="19"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+      opacity=".25"
+    ></path>
+    <path
+      d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+      :class="_classStringToObject(loadClasses)"
+    ></path>
+  </svg>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-const props = defineProps(["color"]);
+const props = withDefaults(defineProps<undefined>(), { color: "primary" });
 const color = ref(props.color || "primary");
 
 const loadClasses = computed(() => {
   const classes = ["mito-circular-progress"];
   if (props.color) {
-    classes.push(`mito-circular-progress--${props.color}`);
+    classes.push(`mito-circular-progress-${props.color}`);
   }
   return classes.join(" ");
 });
@@ -28,78 +42,3 @@ function _classStringToObject(str) {
   return obj;
 }
 </script>
-
-<style scoped>
-@layer {
-  .mito-circular-progress {
-    width: 20px;
-    height: 20px;
-    position: relative;
-  }
-
-  .mito-circular-progress::after {
-    content: "";
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top: 3px solid
-      var(--mito-circular-progress-color, var(--mdc-theme-primary));
-    animation: spin 1s ease-in-out infinite;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: -3px;
-    margin-top: -3px;
-  }
-
-  .mito-circular-progress::before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    border: 3px solid
-      var(--mito-circular-progress-color, var(--mdc-theme-primary));
-    opacity: 0.3;
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: -3px;
-    margin-top: -3px;
-  }
-
-  .mito-circular-progress--primary {
-    --mito-circular-progress-color: var(--mdc-theme-primary);
-  }
-
-  .mito-circular-progress--secondary {
-    --mito-circular-progress-color: var(--mdc-theme-secondary);
-  }
-
-  .mito-circular-progress--success {
-    --mito-circular-progress-color: var(--mdc-theme-success);
-  }
-
-  .mito-circular-progress--warning {
-    --mito-circular-progress-color: var(--mdc-theme-warning);
-  }
-
-  .mito-circular-progress--error {
-    --mito-circular-progress-color: var(--mdc-theme-error);
-  }
-
-  .mito-circular-progress--black {
-    --mito-circular-progress-color: black;
-  }
-
-  .mito-circular-progress--white {
-    --mito-circular-progress-color: white;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-}
-</style>

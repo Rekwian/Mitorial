@@ -1,0 +1,14 @@
+@import 'variables'
+
+@layer
+  .mito-circular-progress
+    transform-origin: center
+    animation: spinner_AtaB .75s infinite ease
+
+  @each $key, $_ in $colors
+    .mito-circular-progress-#{$key}
+      fill: var(--mito-color-#{$key}-text)
+
+  @keyframes spinner_AtaB
+    to
+      transform: rotate(360deg)

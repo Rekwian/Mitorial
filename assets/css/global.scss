@@ -1,0 +1,101 @@
+@import 'https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css' layer(material);
+@import 'variables';
+
+@font-face {
+  font-display: block;
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.material-icons {
+  direction: ltr;
+  display: inline-block;
+  font-family: 'Material Icons';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --mdc-theme-primary: blue;
+  --mdc-theme-on-primary: white;
+  --mdc-typography-font-family: Roboto, 'sans-serif';
+  --mdc-theme-placeholder-primary-on-background: black;
+  --color-background-default: white;
+  --color-text-default: black;
+  --box-shadow-default: 0px 5px 21px rgba(0, 0, 0, 0.1);
+
+  --mito-color-disabled: hsl(0, 0%, 67%);
+  --mito-color-disabled-text: hsl(0, 0%, 10%);
+}
+
+:root {
+  @each $key, $values in $colors {
+      --mito-color-#{$key}: #{map-get($values, 'light', 'main')};
+      --mito-color-#{$key}-hover: #{map-get($values, 'light', 'hover')};
+      --mito-color-#{$key}-active: #{map-get($values, 'light', 'active')};
+      --mito-color-#{$key}-text: #{map-get($values, 'light', 'text')};
+      --mito-color-#{$key}-ripple: #{map-get($values, 'light', 'ripple')};
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @each $key, $values in $colors {
+      --mito-color-#{$key}: #{map-get($values, 'dark', 'main')};
+      --mito-color-#{$key}-hover: #{map-get($values, 'dark', 'hover')};
+      --mito-color-#{$key}-active: #{map-get($values, 'dark', 'active')};
+      --mito-color-#{$key}-text: #{map-get($values, 'dark', 'text')};
+      --mito-color-#{$key}-ripple: #{map-get($values, 'dark', 'ripple')};
+    }
+  }
+}
+
+@layer {
+  body {
+    background-color: var(--mito-color-surface);
+    color: var(--color-text-default);
+    font-family: var(--mdc-typography-font-family);
+  }
+
+  .ripple {
+    animation: ripple 600ms linear;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    position: absolute;
+    transform: scale(0);
+  }
+
+  .mdc-notched-outline__leading, .mdc-notched-outline__trailing {
+    border-color: var(--mdc-theme-on-surface);
+  }
+  .mdc-select__dropdown-icon {
+    fill: var(--mdc-theme-on-surface);
+  }
+
+  .mdc-radio .mdc-radio__outer-circle {
+    border-color: var(--mdc-checkbox-unchecked-color);
+  }
+
+  .o-field-text-input::placeholder {
+    color: var(--mdc-theme-placeholder-primary-on-background)
+  }
+
+  .o-field-text-input,
+  .mdc-tab .mdc-tab__icon,
+  .mdc-tab .mdc-tab__text-label,
+  .mdc-drawer .mdc-deprecated-list-item__graphic,
+  .mdc-menu .mdc-deprecated-list,
+  .mdc-drawer .mdc-deprecated-list-item {
+    color: var(--mdc-theme-text-primary-on-background);
+  }
+}

@@ -1,0 +1,53 @@
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$body-color: #212529;
+
+// Dark theme colors
+$primary-color-dark: #17a2b8;
+$secondary-color-dark: #adb5bd;
+$body-color-dark: #f8f9fa;
+
+// Default theme
+$primary: $primary-color;
+$secondary: $secondary-color;
+$body: $body-color;
+
+@function get-theme($theme) {
+  @if $theme == 'light' {
+    @return map-get((
+      'primary': $primary-color,
+      'secondary': $secondary-color,
+      'body': $body-color,
+    ), $key);
+  } @else if $theme == 'dark' {
+    @return map-get((
+      'primary': $primary-color-dark,
+      'secondary': $secondary-color-dark,
+      'body': $body-color-dark,
+    ), $key);
+  } @else {
+    @error "Unknown theme: #{$theme}.";
+  }
+}
+// Exemple pour le fond de la page
+body {
+  background-color: get-theme('body');
+}
+
+// Exemple pour les boutons
+button {
+  background-color: get-theme('primary');
+  color: #fff;
+  border-color: get-theme('secondary');
+}
+
+// Exemple pour le fond de la page
+.dark-theme body {
+  background-color: get-theme('body', 'dark');
+}
+
+// Exemple pour les boutons
+.dark-theme button {
+  background-color: get-theme('primary', 'dark');
+  border-color: get-theme('secondary', 'dark');
+}

@@ -1,84 +1,44 @@
-import { onMount, onUnMount, Show, Slot, useDefaultProps, useRef, useStore, useStyle } from '@builder.io/mitosis';
-import { MDCRipple } from '@material/ripple';
+import { Show, Slot, useDefaultProps, useStore } from '@builder.io/mitosis';
+import ripple from '../../plugins/ripple'
 import MitoCircularProgress from '../CircularProgress/index.lite';
 
 interface Props {
-  outlined?: boolean;
-  text?: boolean;
-  color?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  ariaLabel?: string;
+  color: string,
+  outlined: boolean,
   loading?: boolean;
-  icon?: string;
-  iconPosition?: 'left' | 'right';
   spinnerColor: 'string';
+  text: boolean,
 }
 
 export default function MitoButton(props: Props) {
-  const MitoButtonRef = useRef<HTMLButtonElement>(null);
-
-  useDefaultProps({
-    spinnerColor: 'white'
-  })
-
   const state = useStore({
+    spinnerColor: 'primary',
     get btnClasses(): string {
-      const classes = ['mito-btn', 'mdc-button'];
+      const classes = ['mito-button'];
+      const color = props.color || 'primary'
 
       if (props.outlined) {
-        classes.push('mdc-button--outlined');
+        classes.push(`mito-button-outlined-${color}`)
       } else if (props.text) {
-        classes.push('mdc-button--text');
+        classes.push(`mito-button-text-${color}`)
+        state.spinnerColor = 'surface'
       } else {
-        classes.push('mdc-button--raised');
-      }
-
-      if (props.color) {
-        classes.push(`mdc-button--${props.color}`);
-      }
-
-      if (props.loading) {
-        classes.push('mdc-button--loading');
+        classes.push(`mito-button-raised-${color}`)
+        state.spinnerColor = 'surface'
       }
 
       return classes.join(' ');
     }
-  });
-
-  onMount(() => {
-    const ripple = new MDCRipple(MitoButtonRef);
-  });
-
-  const handleClick = (event: Event) => {
-    event.preventDefault();
-    if (!props.disabled && !props.loading) {
-      props.onClick();
-    }
-  };
+  })
 
   return (
-    <button
-      ref={MitoButtonRef}
-      class={state.btnClasses}
-      onClick={handleClick}
-      disabled={props.disabled}
-      aria-label={props.ariaLabel}
-    >
+    <button class={state.btnClasses} onClick={(event) => ripple(event)}>
       <Show when={props.loading}>
-        <mito-circular-progress color={props.spinnerColor} />
+        <mito-circular-progress color={state.spinnerColor} />
       </Show>
       <Show when={!props.loading}>
-        <span class="mdc-button__ripple" />
-        <span class="mdc-button__touch" />
-        <Show when={props.iconPosition === 'left'}>
-          <i class="material-icons mdc-button__icon" aria-hidden="true">{ props.icon }</i>
-        </Show>
-        <span class="mdc-button__label"><Slot /></span>
-        <Show when={props.iconPosition === 'right'}>
-          <i class="material-icons mdc-button__icon" aria-hidden="true">{ props.icon }</i>
-        </Show>
+        <Slot />
       </Show>
     </button>
-  );
+  )
 }

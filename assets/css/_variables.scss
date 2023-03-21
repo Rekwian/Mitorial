@@ -1,0 +1,104 @@
+$colors: (
+  'surface': (
+    'light': (
+      'main': hsl(0, 0%, 98%),
+      'text': hsl(0, 0%, 10%),
+    ),
+    'dark': (
+      'main': hsl(0, 0%, 19%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'primary': (
+    'light': (
+      'main': hsl(220, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(220, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'secondary': (
+    'light': (
+      'main': hsl(60, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(60, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'error': (
+    'light': (
+      'main': hsl(0, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(0, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'warning': (
+    'light': (
+      'main': hsl(45, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(45, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'info': (
+    'light': (
+      'main': hsl(200, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(200, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'success': (
+    'light': (
+      'main': hsl(120, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    ),
+    'dark': (
+      'main': hsl(120, 43%, 54%),
+      'text': hsl(0, 0%, 90%),
+    )
+  ),
+  'disabled': (
+    'light': (
+      'main': hsl(0, 0%, 67%),
+      'text': hsl(0, 0%, 10%),
+    ),
+    'dark': (
+      'main': hsl(0, 0%, 67%),
+      'text': hsl(0, 0%, 10%),
+    )
+  )
+);
+
+@each $color, $values in $colors {
+  $colors: map-merge($colors, (
+    #{$color}: (
+      'light': (
+        'main': map-get($values, 'light', 'main'),
+        'text': map-get($values, 'light', 'text'),
+        'hover': darken(map-get($values, 'light', 'main'), 3%),
+        'active': darken(map-get($values, 'light', 'main'), 8%),
+        'ripple': darken(rgba(map-get($values, 'light', 'main'), 0.2), 50%),
+      ),
+      'dark': (
+        'main': map-get($values, 'dark', 'main'),
+        'text': map-get($values, 'dark', 'text'),
+        'hover': darken(map-get($values, 'dark', 'main'), 3%),
+        'active': darken(map-get($values, 'dark', 'main'), 8%),
+        'ripple': darken(rgba(map-get($values, 'dark', 'main'), 0.2), 50%),
+      )
+    )
+  ));
+}
+
