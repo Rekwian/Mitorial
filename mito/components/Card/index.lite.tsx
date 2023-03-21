@@ -7,15 +7,18 @@ interface Props {
 export default function MitoCard(props: Props) {
   const state = useStore({
     get classes(): string {
-      const classes = ['mito-card', 'mdc-card']
+      const classes = ['mito-card']
       if (props.outlined) {
-        classes.push('mdc-card--outlined');
+        classes.push('mito-card-outlined');
       }
-      
+
       return classes.join(' ');
     }
   })
   return (
-    <div class={state.classes}><Slot /></div>
+    <div class={state.classes}>
+      <div class="mito-card--title">test</div>
+      <div class="mito-card--body"><Slot /></div>
+    </div>
   )
 }

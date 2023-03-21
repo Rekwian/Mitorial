@@ -1,0 +1,23 @@
+@layer
+  .mito-card
+    background-color: var(--mito-color-surface)
+    border-radius: 4px
+    box-shadow: var(--mito-box-shadow)
+    color: var(--mito-color-surface-text)
+    display: flex
+    flex-direction: column
+
+    &-outlined
+      box-shadow: none
+      border: 1px solid var(--mito-color-surface-text)
+
+
+    // Ajout d'une bordure grise pour la partie inférieure de la carte
+    &--body
+      padding: 16px
+
+    // Ajout d'un titre et d'une description pour la carte
+    &--title
+      font-size: 20px
+      font-weight: 500
+      padding: 16px

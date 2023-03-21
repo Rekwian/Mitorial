@@ -1,5 +1,8 @@
 <template>
-  <div :class="_classStringToObject(classes)"><slot /></div>
+  <div :class="_classStringToObject(classes)">
+    <div class="mito-card--title">test</div>
+    <div class="mito-card--body"><slot /></div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -11,9 +14,9 @@ interface Props {
 const props = defineProps<Props>();
 
 const classes = computed(() => {
-  const classes = ["mito-card", "mdc-card"];
+  const classes = ["mito-card"];
   if (props.outlined) {
-    classes.push("mdc-card--outlined");
+    classes.push("mito-card-outlined");
   }
   return classes.join(" ");
 });
